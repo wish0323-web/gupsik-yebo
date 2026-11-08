@@ -3,90 +3,119 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>급식 예보 · 등교 브리핑</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500;700;900&display=swap">
+<title>우리 학교 하루 · 급식 예보</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
-:root{--bg:#eef1f8;--card:#fff;--ink:#101a3a;--mute:#5a6585;--line:#d9dfef;--main:#2236ff;--gold:#ffd23f;--warn:#d62839;--warn-bg:#ffe6e9;--ok:#0f8a5f;--ok-bg:#dff6ea;--font:'Gothic A1','Apple SD Gothic Neo','Malgun Gothic',sans-serif}
-@media (prefers-color-scheme:dark){:root{--bg:#0d1424;--card:#16203a;--ink:#eaf0ff;--mute:#9aa8c7;--line:#26335a;--main:#8ea2ff;--warn:#ff6b7a;--warn-bg:#3a1a24;--ok:#4fd6a0;--ok-bg:#123a2e}}
+:root{--bg:#f3f4f7;--card:#fff;--ink:#14161c;--mute:#667085;--line:#e4e7ec;--main:#0f766e;--on-main:#fff;--soft:#e3f4f0;--gold:#f7b500;--warn:#d92d20;--warn-bg:#fdecea;--ok:#0f766e;--ok-bg:#e3f4f0;--hero:#0f2a2e;--r:16px;--rs:12px;--font:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1114;--card:#171b20;--ink:#eef1f4;--mute:#98a2b3;--line:#262c33;--main:#3dc9b0;--on-main:#06231f;--soft:#123a35;--warn:#ff7b72;--warn-bg:#3b1d1b;--ok:#3dc9b0;--ok-bg:#123a35;--hero:#0b2226}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.55;word-break:keep-all}
-.app{max-width:760px;margin:0 auto;padding:16px}
-h1{margin:0;font-size:24px;font-weight:900}
-h2{margin:0 0 8px;font-size:18px;font-weight:900}
-.top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.school{color:var(--mute);font-weight:700;font-size:14px}
-button,input{font:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.6 var(--font);word-break:keep-all}
+.app{max-width:720px;margin:0 auto;padding:0 16px 24px}
+h1{margin:0;font-size:20px;font-weight:700;line-height:1.3}
+h2{margin:0 0 12px;font-size:16px;font-weight:700;line-height:1.4}
+button,input,textarea{font:inherit}
 button{cursor:pointer}
-.btn{background:var(--main);color:#fff;border:0;border-radius:10px;padding:9px 14px;font-weight:700}
-.ghost{background:transparent;color:var(--main);border:2px solid var(--main)}
-.btn:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--main);outline-offset:2px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+/* 헤더 */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:20px 0 12px}
+.school{color:var(--mute);font-size:13px;font-weight:500}
+
+/* 탭 */
+.tabs{position:sticky;top:0;z-index:5;display:flex;gap:4px;overflow-x:auto;margin:0 -16px 16px;padding:0 16px;background:var(--bg);border-bottom:1px solid var(--line);scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:0 0 auto;background:none;border:0;padding:12px 14px;color:var(--mute);font-weight:500;white-space:nowrap}
+.tabs button[aria-selected=true]{color:var(--ink);font-weight:700;box-shadow:inset 0 -3px 0 var(--main)}
+
+/* 카드 · 버튼 */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.btn{height:40px;padding:0 16px;border:0;border-radius:var(--rs);background:var(--main);color:var(--on-main);font-weight:700}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.gold{background:var(--gold);color:#14161c;margin-top:16px}
 .search{display:flex;gap:8px}
-.search input{flex:1;min-width:0;padding:9px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
-.results{display:grid;gap:6px;margin-top:8px}
-.results button{text-align:left;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 12px}
-.results small{display:block;color:var(--mute)}
-.tabs{display:flex;gap:6px;margin-bottom:12px}
-.tabs button{flex:1;padding:10px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-weight:900}
-.tabs button[aria-selected=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.advice{display:grid;gap:6px;margin:0;padding:0;list-style:none}
-.advice li{padding:9px 12px;border-radius:10px;font-weight:700;background:var(--ok-bg);color:var(--ok)}
-.advice li.w{background:var(--warn-bg);color:var(--warn)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.stat{background:var(--bg);border-radius:10px;padding:10px;text-align:center}
-.stat b{display:block;font-size:22px;font-weight:900}
-.stat span{font-size:13px;color:var(--mute);font-weight:700}
-.tray{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.dish{border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-weight:700;background:var(--bg)}
-.dish.bad{border-color:var(--warn);background:var(--warn-bg);color:var(--warn)}
-.dish small{display:block;font-weight:500;color:var(--mute)}
-.dish.bad small{color:var(--warn)}
-.row{display:grid;grid-template-columns:78px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
-.row:first-of-type{border-top:0}
-.row .d{font-weight:900}
-.row .d small{display:block;color:var(--mute);font-weight:700}
-.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
-.chip{padding:2px 9px;border-radius:99px;font-size:13px;font-weight:700;background:var(--bg);border:1px solid var(--line)}
-.chip.bad{background:var(--warn-bg);color:var(--warn);border-color:var(--warn)}
-.bar{height:10px;background:var(--bg);border-radius:6px;overflow:hidden;margin-top:6px}
-.bar i{display:block;height:100%;background:var(--main)}
-details{margin-top:6px}
-summary{cursor:pointer;font-weight:700;color:var(--main)}
-.nt{display:grid;grid-template-columns:repeat(2,1fr);gap:2px 12px;font-size:14px;margin-top:6px}
-.nt span:nth-child(odd){color:var(--mute)}
-.algs{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:4px;margin-top:8px}
-.algs label{display:flex;gap:6px;align-items:center;font-size:14px}
-.msg{color:var(--mute);font-weight:700;padding:6px 0}
+.search input,.cfg input,textarea{height:40px;min-width:0;padding:0 12px;border-radius:var(--rs);border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.search input{flex:1}
+.results{display:grid;gap:8px;margin-top:12px}
+.results button{text-align:left;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:var(--rs);padding:10px 12px;font-weight:500}
+.results small{display:block;color:var(--mute);font-weight:400}
+
+/* 히어로 */
+.hero{background:var(--hero);color:#fff;border-radius:var(--r);padding:24px 20px;margin-bottom:12px}
+.hl{font-size:13px;font-weight:500;color:rgba(255,255,255,.7)}
+.big{font-size:56px;font-weight:700;line-height:1.15;margin:8px 0 4px;letter-spacing:-1px}
+.big small{font-size:18px;font-weight:500;margin-left:4px;letter-spacing:0}
+.hs{font-size:16px;font-weight:700}
+.hint{margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,.7)}
+
+/* 메시지 · 알림 */
+.msg{color:var(--mute);font-size:13px;font-weight:500;padding:4px 0}
 .err{color:var(--warn)}
-.stars{display:flex;gap:6px}.stars button{font-size:32px;background:none;border:0;color:var(--line);padding:0 2px}.stars button.on{color:var(--gold)}
-.foot{color:var(--mute);font-size:12.5px;margin-top:8px}
-.hero{background:var(--main);color:#fff;border-radius:20px;padding:20px;margin-bottom:12px}
-@media(prefers-color-scheme:dark){.hero{color:#0d1424}}
-.hl{font-weight:700;opacity:.85}
-.big{font-size:64px;font-weight:900;line-height:1.1;margin:4px 0}
-.big small{font-size:22px;margin-left:4px}
-.hs{font-size:18px;font-weight:900}
-.hint{font-size:13px;opacity:.85;margin:10px 0 0}
-.gold{background:var(--gold);color:#101a3a;margin-top:10px}
-.dish{cursor:pointer}.dish.like,.chip.like{border-color:var(--main);background:var(--card);color:var(--main)}
+.foot{color:var(--mute);font-size:12px;line-height:1.5;margin:12px 0 0}
+.advice{display:grid;gap:8px;margin:12px 0 0;padding:0;list-style:none}
+.advice li{padding:10px 12px;border-radius:var(--rs);background:var(--ok-bg);color:var(--ok);font-size:14px;font-weight:500}
+.advice li.w{background:var(--warn-bg);color:var(--warn)}
+.best{background:var(--soft);color:var(--main);border-radius:var(--rs);padding:12px 16px;font-weight:700;margin-bottom:12px}
+
+/* 메뉴 · 칩 */
+.tray{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.dish{padding:10px 12px;border:1px solid var(--line);border-radius:var(--rs);background:var(--bg);font-weight:500;cursor:pointer}
+.dish small{display:block;color:var(--mute);font-size:12px;font-weight:400}
+.dish.like,.chip.like{border-color:var(--main);background:var(--soft);color:var(--main)}
 .dish.dislike,.chip.dislike{border-style:dashed;color:var(--mute);text-decoration:line-through}
+.dish.bad,.chip.bad{border-color:var(--warn);background:var(--warn-bg);color:var(--warn)}
+.dish.bad small{color:var(--warn)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:2px 10px;border:1px solid var(--line);border-radius:99px;background:var(--bg);font-size:13px;font-weight:500}
 .chip[data-n]{cursor:pointer}
-.sc{font-weight:900;font-size:15px}
-.best{background:var(--gold);color:#101a3a;border-radius:10px;padding:8px 12px;font-weight:900;margin-bottom:8px}
+
+/* 행 · 통계 */
+.row{display:grid;grid-template-columns:72px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0;padding-top:0}
+.row .d{font-weight:700}
+.row .d small{display:block;color:var(--mute);font-size:12px;font-weight:500}
+.row.past{opacity:.5}
+.sc{font-size:14px;font-weight:700}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--main)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--bg);border-radius:var(--rs);padding:12px 8px;text-align:center}
+.stat b{display:block;font-size:20px;font-weight:700;line-height:1.3}
+.stat span{font-size:12px;color:var(--mute);font-weight:500}
+details{margin-top:8px}
+summary{cursor:pointer;font-weight:700;color:var(--main)}
+.nt{display:grid;grid-template-columns:repeat(2,1fr);gap:4px 16px;font-size:13px;margin-top:8px}
+.nt span:nth-child(odd){color:var(--mute)}
+.algs{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:12px}
+.algs label{display:flex;gap:8px;align-items:center;font-size:14px}
+
+/* 달력 */
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.cal b{text-align:center;font-size:13px;color:var(--mute)}
-.cell{min-height:54px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:2px;position:relative;font-size:13px}
-.cell.hi{background:var(--main);color:#fff;border-color:var(--main)}
+.cal b{text-align:center;font-size:12px;color:var(--mute);font-weight:500;padding-bottom:4px}
+.cell{position:relative;min-height:52px;padding:4px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:13px;font-weight:500}
+.cell.hi{background:var(--main);border-color:var(--main);color:var(--on-main)}
 .cell.lo{opacity:.55}
-.cell.al::after{content:"";position:absolute;top:4px;right:4px;width:9px;height:9px;border-radius:50%;background:var(--warn)}
-.cell.sel{outline:3px solid var(--gold)}
-@media(max-width:480px){.tray{grid-template-columns:1fr}}
+.cell.al::after{content:"";position:absolute;top:5px;right:5px;width:8px;height:8px;border-radius:50%;background:var(--warn)}
+.cell.sel{outline:3px solid var(--gold);outline-offset:1px}
+
+/* 별점 · 시간표 · 설정 */
+.stars{display:flex;gap:4px}
+.stars button{background:none;border:0;padding:0 2px;font-size:32px;line-height:1.2;color:var(--line)}
+.stars button.on{color:var(--gold)}
+.tt{width:100%;min-width:420px;border-collapse:collapse;font-size:14px}
+.tt th,.tt td{border:1px solid var(--line);padding:8px 4px;text-align:center}
+.tt th{background:var(--bg);font-weight:500;color:var(--mute)}
+.tt th small{display:block;font-size:11px}
+.tt th.td{background:var(--main);color:var(--on-main);font-weight:700}
+.tt td.cur{background:var(--gold);color:#14161c;font-weight:700}
+.cfg{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.cfg label{display:grid;gap:4px;font-size:13px;font-weight:500;color:var(--mute)}
+@media(max-width:480px){.tray{grid-template-columns:1fr}.big{font-size:48px}}
 </style>
 </head>
 <body>
 <div class="app">
   <div class="top">
-    <div><h1>급식 예보</h1><div class="school" id="school">학교를 선택해 주세요</div></div>
+    <div><h1>우리 학교 하루</h1><div class="school" id="school">학교를 선택해 주세요</div></div>
     <button class="btn ghost" id="change" type="button">학교 바꾸기</button>
   </div>
 
@@ -102,11 +131,15 @@ summary{cursor:pointer;font-weight:700;color:var(--main)}
   <div id="main" hidden>
     <div class="tabs" role="tablist">
       <button role="tab" id="tab-today" aria-selected="true" type="button">오늘</button>
-      <button role="tab" id="tab-week" aria-selected="false" type="button">이번 주</button>
-      <button role="tab" id="tab-month" aria-selected="false" type="button">한 달</button>
+      <button role="tab" id="tab-tt" aria-selected="false" type="button">시간표</button>
+      <button role="tab" id="tab-ev" aria-selected="false" type="button">학사 일정</button>
+      <button role="tab" id="tab-week" aria-selected="false" type="button">주간 급식</button>
+      <button role="tab" id="tab-month" aria-selected="false" type="button">월간 급식</button>
       <button role="tab" id="tab-me" aria-selected="false" type="button">내 취향</button>
     </div>
     <div id="today"></div>
+    <div id="tt" hidden></div>
+    <div id="ev" hidden></div>
     <div id="week" hidden></div>
     <div id="month" hidden></div>
     <div id="me" hidden></div>
@@ -120,12 +153,12 @@ summary{cursor:pointer;font-weight:700;color:var(--main)}
     </section>
   </div>
 
-  <p class="foot">자료: 교육부 나이스(NEIS) 교육정보 개방 포털(급식식단·학교정보). 알레르기 정보는 참고용이므로 정확한 내용은 학교 급식실에서 꼭 확인하세요.</p>
+  <p class="foot">자료: 교육부 나이스(NEIS) 교육정보 개방 포털(급식식단·학사일정·시간표·학교정보). 알레르기 정보는 참고용이므로 정확한 내용은 학교 급식실에서 꼭 확인하세요.</p>
 </div>
 
 <script>
 // 나이스 교육정보 개방 포털(open.neis.go.kr)에서 발급받은 인증키를 아래 따옴표 안에 붙여 넣으세요.
-const NEIS_KEY = "ad06a0a6fb594f578ff3cdb576b2a85f";
+const NEIS_KEY = "3d356c433d3d4b2fac9f4a40f0a488ee";
 
 // 알레르기 번호표: 1~13번은 식약처·학교급식 표시 기준 자료의 순서와 일치함을 확인했어요. 14~19번은 나이스 공식 안내와 꼭 비교해 보세요.
 const ALG = ["","난류","우유","메밀","땅콩","대두","밀","고등어","게","새우","돼지고기","복숭아","토마토","아황산류","호두","닭고기","쇠고기","오징어","조개류","잣"];
@@ -139,6 +172,8 @@ let school = store.get("school", null);
 let myAlg = store.get("alg", []);
 let taste = store.get("taste", {});
 let diary = store.get("diary", {});
+let cfg = Object.assign({grade:1, cls:1, arr:"08:40", first:"09:00", len:45, brk:10, lunch:50, lunchAfter:4}, store.get("cfg", {}));
+let ttRows = [], ttErr = "", monthEvents = [];
 let auto = store.get("auto", {});
 let monthMeals = [], selDay = null;
 let meals = [], events = {}, weather = null, air = null;
@@ -203,14 +238,90 @@ async function load(){
   const base = {ATPT_OFCDC_SC_CODE:school.atpt, SD_SCHUL_CODE:school.code, MMEAL_SC_CODE:"2"};
   const jobs = await Promise.allSettled([
     neis("mealServiceDietInfo", {...base, MLSV_FROM_YMD:ymd(mon), MLSV_TO_YMD:ymd(sun)}),
-    neis("mealServiceDietInfo", {...base, MLSV_FROM_YMD:ymd(f), MLSV_TO_YMD:ymd(l)})
+    neis("mealServiceDietInfo", {...base, MLSV_FROM_YMD:ymd(f), MLSV_TO_YMD:ymd(l)}),
+    neis("SchoolSchedule", {ATPT_OFCDC_SC_CODE:school.atpt, SD_SCHUL_CODE:school.code, AA_FROM_YMD:ymd(f), AA_TO_YMD:ymd(new Date(now.getFullYear(), now.getMonth() + 2, 0))})
   ]);
   meals = jobs[0].status === "fulfilled" ? jobs[0].value : [];
   monthMeals = jobs[1].status === "fulfilled" ? jobs[1].value : [];
+  monthEvents = jobs[2].status === "fulfilled" ? jobs[2].value : [];
+  await loadTT();
   if (jobs[0].status === "rejected" && jobs[1].status === "rejected"){
     $("#today").innerHTML = '<div class="card msg err">급식 정보를 불러오지 못했어요.<br>원인: ' + esc(jobs[0].reason.message) + "</div>"; return;
   }
-  renderToday(); renderWeek(); renderMonth(); renderMe();
+  renderToday(); renderTT(); renderEv(); renderWeek(); renderMonth(); renderMe();
+}
+
+/* 시간표 · 일정 · 등하교 */
+const kind = () => /초등학교$|초$/.test(school.name) ? "els" : /고등학교$|고$/.test(school.name) ? "his" : "mis";
+const toMin = t => { const p = String(t || "0:0").split(":").map(Number); return p[0] * 60 + (p[1] || 0); };
+const fmt = n => String(Math.floor(n / 60)).padStart(2, "0") + ":" + String(n % 60).padStart(2, "0");
+const pStart = p => toMin(cfg.first) + (p - 1) * (+cfg.len + +cfg.brk) + (p > cfg.lunchAfter ? +cfg.lunch : 0);
+const monday = d => { const m = new Date(d); m.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return m; };
+
+async function loadTT(){
+  ttRows = []; ttErr = "";
+  const now = new Date(), mon = monday(now), sun = new Date(mon); sun.setDate(mon.getDate() + 6);
+  const ay = now.getMonth() < 2 ? now.getFullYear() - 1 : now.getFullYear();
+  const sem = now.getMonth() >= 2 && now.getMonth() <= 7 ? "1" : "2";
+  try {
+    ttRows = await neis(kind() + "Timetable", {ATPT_OFCDC_SC_CODE:school.atpt, SD_SCHUL_CODE:school.code, AY:String(ay), SEM:sem, GRADE:String(cfg.grade), CLASS_NM:String(cfg.cls), TI_FROM_YMD:ymd(mon), TI_TO_YMD:ymd(sun)});
+  } catch(e){ ttErr = e.message; }
+}
+
+function dayCard(){
+  const now = new Date(), key = ymd(now), nm = now.getHours() * 60 + now.getMinutes(), wk = now.getDay() % 6 !== 0;
+  const ps = ttRows.filter(r => r.ALL_TI_YMD === key).sort((a, b) => a.PERIO - b.PERIO);
+  const evs = monthEvents.filter(r => r.AA_YMD === key).map(r => r.EVENT_NM);
+  const next = monthEvents.filter(r => r.AA_YMD > key).sort((a, b) => a.AA_YMD.localeCompare(b.AA_YMD))[0];
+  const tips = [];
+  if (wk && ps.length){
+    const end = pStart(+ps[ps.length - 1].PERIO) + +cfg.len, arr = toMin(cfg.arr);
+    if (nm < arr) tips.push(["", "등교 시각(" + cfg.arr + ")까지 " + (arr - nm) + "분 남았어요."]);
+    else if (nm < end) tips.push(["", "하교 예상 " + fmt(end) + " · " + (end - nm) + "분 남았어요."]);
+    else tips.push(["", "오늘 수업이 끝났어요. (하교 예상 " + fmt(end) + ")"]);
+  } else if (wk) tips.push(["", "시간표 탭에서 학년·반을 설정하면 오늘 시간표와 하교 시간을 알려 줘요."]);
+  if (evs.length) tips.push(["w", "오늘 학사 일정: " + evs.join(", ")]);
+  if (next){ const n = Math.round((fromYmd(next.AA_YMD) - fromYmd(key)) / 86400000); tips.push(["", "다음 일정 D-" + n + " · " + next.EVENT_NM]); }
+  return '<section class="card"><h2>오늘 하루</h2>' + (ps.length ? '<div class="chips" style="margin-bottom:8px">' + ps.map(r => '<span class="chip">' + r.PERIO + "교시 " + esc(r.ITRT_CNTNT) + "</span>").join("") + "</div>" : "") +
+    '<ul class="advice">' + tips.map(t => '<li class="' + t[0] + '">' + esc(t[1]) + "</li>").join("") + "</ul></section>";
+}
+
+function renderTT(){
+  const el = $("#tt"); if (!el) return;
+  const now = new Date(), nm = now.getHours() * 60 + now.getMinutes(), mon = monday(now);
+  const days = [0, 1, 2, 3, 4].map(i => { const d = new Date(mon); d.setDate(mon.getDate() + i); return d; });
+  const max = Math.max(0, ...ttRows.map(r => +r.PERIO));
+  let grid;
+  if (ttRows.length){
+    grid = '<div style="overflow-x:auto"><table class="tt"><tr><th></th>' + days.map(d => "<th" + (ymd(d) === ymd(now) ? ' class="td"' : "") + ">" + dayName(d) + "</th>").join("") + "</tr>";
+    for (let p = 1; p <= max; p++){
+      grid += "<tr><th>" + p + "<small>" + fmt(pStart(p)) + "</small></th>" + days.map(d => {
+        const r = ttRows.find(x => x.ALL_TI_YMD === ymd(d) && +x.PERIO === p);
+        const cur = ymd(d) === ymd(now) && nm >= pStart(p) && nm < pStart(p) + +cfg.len;
+        return "<td" + (cur ? ' class="cur"' : "") + ">" + esc(r ? r.ITRT_CNTNT : "") + "</td>";
+      }).join("") + "</tr>";
+    }
+    grid += "</table></div>";
+  } else grid = '<div class="msg' + (ttErr ? " err" : "") + '">' + (ttErr ? "시간표를 불러오지 못했어요: " + esc(ttErr) : "이번 주 시간표가 없어요. 학년과 반을 확인해 주세요. 방학이거나 학교가 시간표를 공개하지 않았을 수도 있어요.") + "</div>";
+  const f = (k, label, type) => "<label>" + label + '<input data-cfg="' + k + '" type="' + type + '" value="' + esc(cfg[k]) + '"></label>';
+  el.innerHTML = '<section class="card"><h2>' + esc(school.name) + " " + cfg.grade + "학년 " + cfg.cls + "반 시간표</h2>" + grid + "</section>" +
+    '<section class="card"><h2>내 반과 시간 설정</h2><div class="cfg">' + f("grade", "학년", "number") + f("cls", "반", "number") + f("arr", "등교 시각", "time") + f("first", "1교시 시작", "time") + f("len", "수업(분)", "number") + f("brk", "쉬는시간(분)", "number") + f("lunch", "점심(분)", "number") + f("lunchAfter", "점심은 몇 교시 뒤", "number") +
+    '</div><div class="foot">교시별 시각과 하교 예상 시각은 예시 기본값으로 계산해요. 우리 학교 시간에 맞게 바꿔 주세요. 고등학교의 선택과목은 반별 시간표와 다를 수 있어요.</div></section>';
+  el.querySelectorAll("[data-cfg]").forEach(i => i.onchange = async () => {
+    cfg[i.dataset.cfg] = i.type === "number" ? +i.value : i.value; store.set("cfg", cfg);
+    if (i.dataset.cfg === "grade" || i.dataset.cfg === "cls") await loadTT();
+    renderTT(); renderToday();
+  });
+}
+
+function renderEv(){
+  const el = $("#ev"); if (!el) return;
+  const key = ymd(new Date());
+  const list = monthEvents.slice().sort((a, b) => a.AA_YMD.localeCompare(b.AA_YMD));
+  el.innerHTML = '<section class="card"><h2>학사 일정 (이번 달~다음 달)</h2>' + (list.length ? list.map(r => {
+    const d = fromYmd(r.AA_YMD), n = Math.round((d - fromYmd(key)) / 86400000);
+    return '<div class="row' + (n < 0 ? " past" : "") + '"><div class="d">' + (d.getMonth() + 1) + "/" + d.getDate() + "<small>" + dayName(d) + '요일</small></div><div><b>' + esc(r.EVENT_NM) + '</b><div class="msg">' + (n === 0 ? "오늘" : n > 0 ? "D-" + n : "지난 일정") + "</div></div></div>";
+  }).join("") : '<div class="msg">일정이 없거나 불러오지 못했어요.</div>') + "</section>" + (!NEIS_KEY ? '<div class="msg err">인증키가 없어서 5건만 보여요.</div>' : "");
 }
 
 /* 오늘 급식 */
@@ -230,7 +341,7 @@ function renderToday(){
   const hero = '<section class="hero"><div class="hl">오늘의 급식 예보</div>' + (meal
     ? '<div class="big">' + icon(sc) + " " + sc + '<small>점</small></div><div class="hs">' + label(sc) + (hits.length ? " · 알레르기 주의" : "") + '</div><button class="btn gold" id="share" type="button">예보 복사하기</button>'
     : '<div class="hs">오늘은 급식이 없어요</div>') + '<p class="hint">메뉴를 누르면 ♥ 좋아요 → ✕ 싫어요 → 해제 순서로 바뀌어요. 취향을 알려 줄수록 예보가 나에게 맞춰져요.</p></section>';
-  $("#today").innerHTML = hero + '<section class="card"><h2>' + (d.getMonth()+1) + "월 " + d.getDate() + "일 (" + dayName(d) + ') 점심</h2>' + (meal
+  $("#today").innerHTML = hero + dayCard() + '<section class="card"><h2>' + (d.getMonth()+1) + "월 " + d.getDate() + "일 (" + dayName(d) + ') 점심</h2>' + (meal
       ? '<div class="tray">' + menu.map(dishHtml).join("") + '</div><div class="msg">열량 ' + esc(meal.CAL_INFO) + "</div>"
       : '<div class="msg">급식 정보 없음</div>') + '<ul class="advice">' + tips.map(t => '<li class="' + t[0] + '">' + esc(t[1]) + "</li>").join("") + "</ul></section>" +
     (meal ? '<section class="card"><h2>오늘 급식 어땠어요?</h2><div class="stars">' + [1,2,3,4,5].map(n => '<button type="button" data-star="' + n + '" class="' + (rated >= n ? "on" : "") + '" aria-label="' + n + '점">★</button>').join("") + '</div><div class="msg">별점은 일기에 쌓이고, 높은 별점의 메뉴는 다음 예보에 자동으로 반영돼요.</div></section>' : "");
@@ -369,7 +480,7 @@ function buildAlgs(){
 }
 
 function showTab(t){
-  ["today","week","month","me"].forEach(k => { $("#tab-"+k).setAttribute("aria-selected", k === t); $("#"+k).hidden = k !== t; });
+  ["today","tt","ev","week","month","me"].forEach(k => { $("#tab-"+k).setAttribute("aria-selected", k === t); $("#"+k).hidden = k !== t; });
 }
 function start(){
   $("#picker").hidden = true; $("#main").hidden = false;
@@ -383,6 +494,8 @@ $("#tab-today").onclick = () => showTab("today");
 $("#tab-week").onclick = () => showTab("week");
 $("#tab-month").onclick = () => showTab("month");
 $("#tab-me").onclick = () => showTab("me");
+$("#tab-tt").onclick = () => showTab("tt");
+$("#tab-ev").onclick = () => showTab("ev");
 if (school) start();
 </script>
 </body>
