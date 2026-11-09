@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>슬기로운 중학생활</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#f3f4f7;--card:#fff;--ink:#14161c;--mute:#667085;--line:#e4e7ec;--main:#0f766e;--on-main:#fff;--soft:#e3f4f0;--gold:#f7b500;--warn:#d92d20;--warn-bg:#fdecea;--ok:#0f766e;--ok-bg:#e3f4f0;--hero:#0f2a2e;--r:16px;--rs:12px;--font:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1114;--card:#171b20;--ink:#eef1f4;--mute:#98a2b3;--line:#262c33;--main:#3dc9b0;--on-main:#06231f;--soft:#123a35;--warn:#ff7b72;--warn-bg:#3b1d1b;--ok:#3dc9b0;--ok-bg:#123a35;--hero:#0b2226}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.6 var(--font);word-break:keep-all}
+[hidden]{display:none!important}
+.app{max-width:720px;margin:0 auto;padding:0 16px 104px}
+h1{margin:0;font-size:20px;font-weight:700;line-height:1.3}
+h2{margin:0 0 12px;font-size:16px;font-weight:700;line-height:1.4}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+/* 헤더 */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:20px 0 12px}
+.school{color:var(--mute);font-size:13px;font-weight:500}
+
+/* 탭 */
+.tabs{position:sticky;top:0;z-index:5;display:flex;gap:4px;overflow-x:auto;margin:0 -16px 16px;padding:0 16px;background:var(--bg);border-bottom:1px solid var(--line);scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:0 0 auto;background:none;border:0;padding:12px 14px;color:var(--mute);font-weight:500;white-space:nowrap}
+.tabs button[aria-selected=true]{color:var(--ink);font-weight:700;box-shadow:inset 0 -3px 0 var(--main)}
+
+/* 카드 · 버튼 */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.btn{height:40px;padding:0 16px;border:0;border-radius:var(--rs);background:var(--main);color:var(--on-main);font-weight:700}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.gold{background:var(--gold);color:#14161c;margin-top:16px}
+.search{display:flex;gap:8px}
+.search input,.cfg input,textarea{height:40px;min-width:0;padding:0 12px;border-radius:var(--rs);border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.search input{flex:1}
+.results{display:grid;gap:8px;margin-top:12px}
+.results button{text-align:left;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:var(--rs);padding:10px 12px;font-weight:500}
+.results small{display:block;color:var(--mute);font-weight:400}
+
+/* 히어로 */
+.hero{background:var(--hero);color:#fff;border-radius:var(--r);padding:24px 20px;margin-bottom:12px}
+.hl{font-size:13px;font-weight:500;color:rgba(255,255,255,.7)}
+.big{font-size:56px;font-weight:700;line-height:1.15;margin:8px 0 4px;letter-spacing:-1px}
+.big small{font-size:18px;font-weight:500;margin-left:4px;letter-spacing:0}
+.hs{font-size:16px;font-weight:700}
+.hint{margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,.7)}
+
+/* 메시지 · 알림 */
+.msg{color:var(--mute);font-size:13px;font-weight:500;padding:4px 0}
+.err{color:var(--warn)}
+.foot{color:var(--mute);font-size:12px;line-height:1.5;margin:12px 0 0}
+.advice{display:grid;gap:8px;margin:12px 0 0;padding:0;list-style:none}
+.advice li{padding:10px 12px;border-radius:var(--rs);background:var(--ok-bg);color:var(--ok);font-size:14px;font-weight:500}
+.advice li.w{background:var(--warn-bg);color:var(--warn)}
+.best{background:var(--soft);color:var(--main);border-radius:var(--rs);padding:12px 16px;font-weight:700;margin-bottom:12px}
+
+/* 메뉴 · 칩 */
+.tray{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.dish{padding:10px 12px;border:1px solid var(--line);border-radius:var(--rs);background:var(--bg);font-weight:500;cursor:pointer}
+.dish small{display:block;color:var(--mute);font-size:12px;font-weight:400}
+.dish.like,.chip.like{border-color:var(--main);background:var(--soft);color:var(--main)}
+.dish.dislike,.chip.dislike{border-style:dashed;color:var(--mute);text-decoration:line-through}
+.dish.bad,.chip.bad{border-color:var(--warn);background:var(--warn-bg);color:var(--warn)}
+.dish.bad small{color:var(--warn)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:2px 10px;border:1px solid var(--line);border-radius:99px;background:var(--bg);font-size:13px;font-weight:500}
+.chip[data-n]{cursor:pointer}
+
+/* 행 · 통계 */
+.row{display:grid;grid-template-columns:72px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0;padding-top:0}
+.row .d{font-weight:700}
+.row .d small{display:block;color:var(--mute);font-size:12px;font-weight:500}
+.row.past{opacity:.5}
+.sc{font-size:14px;font-weight:700}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--main)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--bg);border-radius:var(--rs);padding:12px 8px;text-align:center}
+.stat b{display:block;font-size:20px;font-weight:700;line-height:1.3}
+.stat span{font-size:12px;color:var(--mute);font-weight:500}
+details{margin-top:8px}
+summary{cursor:pointer;font-weight:700;color:var(--main)}
+.nt{display:grid;grid-template-columns:repeat(2,1fr);gap:4px 16px;font-size:13px;margin-top:8px}
+.nt span:nth-child(odd){color:var(--mute)}
+.algs{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:12px}
+.algs label{display:flex;gap:8px;align-items:center;font-size:14px}
+
+/* 달력 */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal b{text-align:center;font-size:12px;color:var(--mute);font-weight:500;padding-bottom:4px}
+.cell{position:relative;min-height:52px;padding:4px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:13px;font-weight:500}
+.cell.hi{background:var(--main);border-color:var(--main);color:var(--on-main)}
+.cell.lo{opacity:.55}
+.cell.al::after{content:"";position:absolute;top:5px;right:5px;width:8px;height:8px;border-radius:50%;background:var(--warn)}
+.cell.sel{outline:3px solid var(--gold);outline-offset:1px}
+
+/* 별점 · 시간표 · 설정 */
+.stars{display:flex;gap:4px}
+.stars button{background:none;border:0;padding:0 2px;font-size:32px;line-height:1.2;color:var(--line)}
+.stars button.on{color:var(--gold)}
+.tt{width:100%;min-width:420px;border-collapse:collapse;font-size:14px}
+.tt th,.tt td{border:1px solid var(--line);padding:8px 4px;text-align:center}
+.tt th{background:var(--bg);font-weight:500;color:var(--mute)}
+.tt th small{display:block;font-size:11px}
+.tt th.td{background:var(--main);color:var(--on-main);font-weight:700}
+.tt td.cur{background:var(--gold);color:#14161c;font-weight:700}
+.cfg{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.cfg label{display:grid;gap:4px;font-size:13px;font-weight:500;color:var(--mute)}
+#main[data-c=go]{--tint:#fff1cc;--tc:#8a5a00}
+#main[data-c=school]{--tint:#e2ebff;--tc:#2347b5}
+#main[data-c=meal]{--tint:#e3f4f0;--tc:#0f766e}
+#main[data-c=back]{--tint:#ffe3ec;--tc:#b4234f}
+#main[data-c=life]{--tint:#ece6ff;--tc:#5a3fc0}
+@media (prefers-color-scheme:dark){#main[data-c=go]{--tint:#3a2e0e;--tc:#f7c85a}#main[data-c=school]{--tint:#16264d;--tc:#9db8ff}#main[data-c=meal]{--tint:#123a35;--tc:#3dc9b0}#main[data-c=back]{--tint:#40182a;--tc:#ff9db9}#main[data-c=life]{--tint:#2a2250;--tc:#c2b0ff}}
+.cathead{display:flex;gap:12px;align-items:center;margin:0 0 12px;padding:16px;border-radius:var(--r);background:var(--tint);color:var(--tc)}
+.cathead>span{font-size:32px;line-height:1}
+.cathead b{display:block;font-size:18px}
+.cathead small{font-size:13px;font-weight:500}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:10;display:flex;gap:4px;max-width:720px;margin:0 auto;padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line)}
+.nav button{flex:1;display:grid;justify-items:center;gap:2px;padding:6px 0;border:0;border-radius:var(--rs);background:none;color:var(--mute);font-size:11px;font-weight:500}
+.nav button span{font-size:22px;line-height:1.2}
+.nav button[aria-current=true]{background:var(--tint);color:var(--tc);font-weight:700}
+.cd{font-size:36px;font-weight:700;line-height:1.25;letter-spacing:-.5px}
+.cd small{display:block;margin-top:2px;font-size:13px;font-weight:500;letter-spacing:0;color:var(--mute)}
+.chk{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.chk span{flex:1}
+.chk input{width:20px;height:20px;accent-color:var(--main)}
+.x{background:none;border:0;color:var(--mute);font-size:20px;line-height:1;padding:0 4px}
+select{height:40px;padding:0 8px;border-radius:var(--rs);border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.mem button{aspect-ratio:1;border:1px solid var(--line);border-radius:var(--rs);background:var(--soft);color:var(--main);font-size:28px;font-weight:700}
+.mem button.up{background:var(--card)}
+.mem button.ok{opacity:.45}
+@media(max-width:480px){.tray{grid-template-columns:1fr}.big{font-size:48px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div><h1>슬기로운 중학생활</h1><div class="school" id="school">학교를 선택해 주세요</div></div>
+    <button class="btn ghost" id="change" type="button">학교 바꾸기</button>
+  </div>
+
+  <section class="card" id="picker">
+    <h2>학교 찾기</h2>
+    <div class="search">
+      <input id="q" type="text" value="경희중학교" aria-label="학교 이름" placeholder="학교 이름 입력">
+      <button class="btn" id="find" type="button">검색</button>
+    </div>
+    <div class="results" id="results"></div>
+  </section>
+
+  <div id="main" hidden>
+    <div class="cathead" id="cathead"></div>
+    <div class="tabs" id="subtabs" role="tablist"></div>
+    <div id="go" hidden></div><div id="tt" hidden></div><div id="ev" hidden></div>
+    <div id="today" hidden></div><div id="week" hidden></div><div id="month" hidden></div><div id="me" hidden></div>
+    <div id="back" hidden></div><div id="bank" hidden></div><div id="game" hidden></div>
+    <section class="card" id="algcard" hidden>
+      <details><summary>내 알레르기 설정</summary><div class="algs" id="algs"></div><p class="foot">체크한 성분이 들어간 메뉴는 빨간색으로 표시돼요.</p></details>
+    </section>
+    <nav class="nav" id="nav" aria-label="카테고리"></nav>
+  </div>
+
+  <p class="foot">자료: 교육부 나이스(NEIS) 교육정보 개방 포털(급식식단·학사일정·시간표·학교정보). 알레르기 정보는 참고용이므로 정확한 내용은 학교 급식실에서 꼭 확인하세요.</p>
+</div>
+
+<script>
+// 나이스 교육정보 개방 포털(open.neis.go.kr)에서 발급받은 인증키를 아래 따옴표 안에 붙여 넣으세요.
+const NEIS_KEY = "3d356c433d3d4b2fac9f4a40f0a488ee";
+
+// 알레르기 번호표: 1~13번은 식약처·학교급식 표시 기준 자료의 순서와 일치함을 확인했어요. 14~19번은 나이스 공식 안내와 꼭 비교해 보세요.
+const ALG = ["","난류","우유","메밀","땅콩","대두","밀","고등어","게","새우","돼지고기","복숭아","토마토","아황산류","호두","닭고기","쇠고기","오징어","조개류","잣"];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const store = {
+  get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+};
+let school = store.get("school", null);
+let myAlg = store.get("alg", []);
+let taste = store.get("taste", {});
+let diary = store.get("diary", {});
+let cfg = Object.assign({grade:1, cls:1, arr:"08:40", first:"09:00", len:45, brk:10, lunch:50, lunchAfter:4}, store.get("cfg", {}));
+let ttRows = [], ttErr = "", monthEvents = [];
+let auto = store.get("auto", {});
+let monthMeals = [], selDay = null;
+let meals = [], events = {}, weather = null, air = null;
+
+const ymd = d => d.getFullYear() + String(d.getMonth()+1).padStart(2,"0") + String(d.getDate()).padStart(2,"0");
+const dayName = d => "일월화수목금토"[d.getDay()];
+const fromYmd = s => new Date(+s.slice(0,4), +s.slice(4,6)-1, +s.slice(6,8));
+
+async function neis(name, params){
+  // 인증키가 없으면 나이스는 한 번에 최대 5건만 돌려줘요.
+  const p = new URLSearchParams({Type:"json", pSize: NEIS_KEY ? "100" : "5", ...params});
+  if (NEIS_KEY) p.set("KEY", NEIS_KEY);
+  const res = await fetch("https://open.neis.go.kr/hub/" + name + "?" + p);
+  if (!res.ok) throw new Error("서버 응답 오류 (" + res.status + ")");
+  const data = await res.json();
+  if (data[name] && data[name][1]) return data[name][1].row;
+  const r = data.RESULT || (data[name] && data[name][0] && data[name][0].head && data[name][0].head[1] && data[name][0].head[1].RESULT);
+  if (r && r.CODE && r.CODE !== "INFO-000" && r.CODE !== "INFO-200") throw new Error(r.CODE + " " + r.MESSAGE);
+  return [];
+}
+
+function parseMenu(r){
+  return r.DDISH_NM.split(/<br\s*\/?>/i).map(t => {
+    const m = t.trim().match(/^(.*?)\s*\(([\d.]+)\)\s*$/);
+    return m ? {name:m[1], alg:m[2].split(".").filter(Boolean).map(Number)} : {name:t.trim(), alg:[]};
+  }).filter(x => x.name);
+}
+function parseNtr(r){
+  return (r.NTR_INFO || "").split(/<br\s*\/?>/i).map(t => t.split(":").map(x => x.trim())).filter(a => a.length === 2);
+}
+const kcal = r => parseFloat(r.CAL_INFO) || 0;
+const hitList = menu => [...new Set(menu.flatMap(d => d.alg.filter(a => myAlg.includes(a))))];
+
+/* 학교 검색 */
+async function search(){
+  const q = $("#q").value.trim();
+  const box = $("#results");
+  if (!q) return;
+  box.innerHTML = '<div class="msg">검색 중…</div>';
+  try {
+    const rows = await neis("schoolInfo", {SCHUL_NM:q});
+    box.innerHTML = rows.length ? "" : '<div class="msg">검색 결과가 없어요. 학교 이름을 다시 확인해 주세요.</div>';
+    rows.forEach(r => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.innerHTML = esc(r.SCHUL_NM) + "<small>" + esc(r.ATPT_OFCDC_SC_NM) + " · " + esc(r.ORG_RDNMA || "") + "</small>";
+      b.onclick = () => { school = {atpt:r.ATPT_OFCDC_SC_CODE, code:r.SD_SCHUL_CODE, name:r.SCHUL_NM, office:r.ATPT_OFCDC_SC_NM}; store.set("school", school); start(); };
+      box.appendChild(b);
+    });
+  } catch(e){
+    box.innerHTML = '<div class="msg err">검색에 실패했어요.<br>원인: ' + esc(e.message) + '<br>인터넷 연결, 인증키, 그리고 파일을 연 방법(GitHub Pages 주소로 열어야 해요)을 확인해 주세요.</div>';
+  }
+}
+
+/* 데이터 불러오기 */
+async function load(){
+  $("#today").innerHTML = $("#go").innerHTML = '<div class="card msg">불러오는 중…</div>';
+  const now = new Date();
+  const mon = new Date(now); mon.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+  const sun = new Date(mon); sun.setDate(mon.getDate() + 6);
+  const f = new Date(now.getFullYear(), now.getMonth(), 1), l = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  const base = {ATPT_OFCDC_SC_CODE:school.atpt, SD_SCHUL_CODE:school.code, MMEAL_SC_CODE:"2"};
+  const jobs = await Promise.allSettled([
+    neis("mealServiceDietInfo", {...base, MLSV_FROM_YMD:ymd(mon), MLSV_TO_YMD:ymd(sun)}),
+    neis("mealServiceDietInfo", {...base, MLSV_FROM_YMD:ymd(f), MLSV_TO_YMD:ymd(l)}),
+    neis("SchoolSchedule", {ATPT_OFCDC_SC_CODE:school.atpt, SD_SCHUL_CODE:school.code, AA_FROM_YMD:ymd(f), AA_TO_YMD:ymd(new Date(now.getFullYear(), now.getMonth() + 2, 0))})
+  ]);
+  meals = jobs[0].status === "fulfilled" ? jobs[0].value : [];
+  monthMeals = jobs[1].status === "fulfilled" ? jobs[1].value : [];
+  monthEvents = jobs[2].status === "fulfilled" ? jobs[2].value : [];
+  await loadTT();
+  if (jobs[0].status === "rejected" && jobs[1].status === "rejected"){
+    $("#today").innerHTML = '<div class="card msg err">급식 정보를 불러오지 못했어요.<br>원인: ' + esc(jobs[0].reason.message) + "</div>"; $("#go").innerHTML = $("#today").innerHTML; return;
+  }
+  renderToday(); renderTT(); renderEv(); renderWeek(); renderMonth(); renderMe(); renderGo(); renderBack();
+  if (!opened){ opened = true; autoOpen(); }
+}
+
+/* 시간표 · 일정 · 등하교 */
+const kind = () => /초등학교$|초$/.test(school.name) ? "els" : /고등학교$|고$/.test(school.name) ? "his" : "mis";
+const toMin = t => { const p = String(t || "0:0").split(":").map(Number); return p[0] * 60 + (p[1] || 0); };
+const fmt = n => String(Math.floor(n / 60)).padStart(2, "0") + ":" + String(n % 60).padStart(2, "0");
+const pStart = p => toMin(cfg.first) + (p - 1) * (+cfg.len + +cfg.brk) + (p > cfg.lunchAfter ? +cfg.lunch : 0);
+const monday = d => { const m = new Date(d); m.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return m; };
+
+async function loadTT(){
+  ttRows = []; ttErr = "";
+  const now = new Date(), mon = monday(now), sun = new Date(mon); sun.setDate(mon.getDate() + 6);
+  const ay = now.getMonth() < 2 ? now.getFullYear() - 1 : now.getFullYear();
+  const sem = now.getMonth() >= 2 && now.getMonth() <= 7 ? "1" : "2";
+  try {
+    ttRows = await neis(kind() + "Timetable", {ATPT_OFCDC_SC_CODE:school.atpt, SD_SCHUL_CODE:school.code, AY:String(ay), SEM:sem, GRADE:String(cfg.grade), CLASS_NM:String(cfg.cls), TI_FROM_YMD:ymd(mon), TI_TO_YMD:ymd(sun)});
+  } catch(e){ ttErr = e.message; }
+}
+
+function dayCard(){
+  const now = new Date(), key = ymd(now), nm = now.getHours() * 60 + now.getMinutes(), wk = now.getDay() % 6 !== 0;
+  const ps = ttRows.filter(r => r.ALL_TI_YMD === key).sort((a, b) => a.PERIO - b.PERIO);
+  const evs = monthEvents.filter(r => r.AA_YMD === key).map(r => r.EVENT_NM);
+  const next = monthEvents.filter(r => r.AA_YMD > key).sort((a, b) => a.AA_YMD.localeCompare(b.AA_YMD))[0];
+  const tips = [];
+  if (wk && ps.length){
+    const end = pStart(+ps[ps.length - 1].PERIO) + +cfg.len, arr = toMin(cfg.arr);
+    if (nm < arr) tips.push(["", "등교 시각(" + cfg.arr + ")까지 " + (arr - nm) + "분 남았어요."]);
+    else if (nm < end) tips.push(["", "하교 예상 " + fmt(end) + " · " + (end - nm) + "분 남았어요."]);
+    else tips.push(["", "오늘 수업이 끝났어요. (하교 예상 " + fmt(end) + ")"]);
+  } else if (wk) tips.push(["", "시간표 탭에서 학년·반을 설정하면 오늘 시간표와 하교 시간을 알려 줘요."]);
+  if (evs.length) tips.push(["w", "오늘 학사 일정: " + evs.join(", ")]);
+  if (next){ const n = Math.round((fromYmd(next.AA_YMD) - fromYmd(key)) / 86400000); tips.push(["", "다음 일정 D-" + n + " · " + next.EVENT_NM]); }
+  return '<section class="card"><h2>오늘 하루</h2>' + (ps.length ? '<div class="chips" style="margin-bottom:8px">' + ps.map(r => '<span class="chip">' + r.PERIO + "교시 " + esc(r.ITRT_CNTNT) + "</span>").join("") + "</div>" : "") +
+    '<ul class="advice">' + tips.map(t => '<li class="' + t[0] + '">' + esc(t[1]) + "</li>").join("") + "</ul></section>";
+}
+
+function renderTT(){
+  const el = $("#tt"); if (!el) return;
+  const now = new Date(), nm = now.getHours() * 60 + now.getMinutes(), mon = monday(now);
+  const days = [0, 1, 2, 3, 4].map(i => { const d = new Date(mon); d.setDate(mon.getDate() + i); return d; });
+  const max = Math.max(0, ...ttRows.map(r => +r.PERIO));
+  let grid;
+  if (ttRows.length){
+    grid = '<div style="overflow-x:auto"><table class="tt"><tr><th></th>' + days.map(d => "<th" + (ymd(d) === ymd(now) ? ' class="td"' : "") + ">" + dayName(d) + "</th>").join("") + "</tr>";
+    for (let p = 1; p <= max; p++){
+      grid += "<tr><th>" + p + "<small>" + fmt(pStart(p)) + "</small></th>" + days.map(d => {
+        const r = ttRows.find(x => x.ALL_TI_YMD === ymd(d) && +x.PERIO === p);
+        const cur = ymd(d) === ymd(now) && nm >= pStart(p) && nm < pStart(p) + +cfg.len;
+        return "<td" + (cur ? ' class="cur"' : "") + ">" + esc(r ? r.ITRT_CNTNT : "") + "</td>";
+      }).join("") + "</tr>";
+    }
+    grid += "</table></div>";
+  } else grid = '<div class="msg' + (ttErr ? " err" : "") + '">' + (ttErr ? "시간표를 불러오지 못했어요: " + esc(ttErr) : "이번 주 시간표가 없어요. 학년과 반을 확인해 주세요. 방학이거나 학교가 시간표를 공개하지 않았을 수도 있어요.") + "</div>";
+  const f = (k, label, type) => "<label>" + label + '<input data-cfg="' + k + '" type="' + type + '" value="' + esc(cfg[k]) + '"></label>';
+  el.innerHTML = '<section class="card"><h2>' + esc(school.name) + " " + cfg.grade + "학년 " + cfg.cls + "반 시간표</h2>" + grid + "</section>" +
+    '<section class="card"><h2>내 반과 시간 설정</h2><div class="cfg">' + f("grade", "학년", "number") + f("cls", "반", "number") + f("arr", "등교 시각", "time") + f("first", "1교시 시작", "time") + f("len", "수업(분)", "number") + f("brk", "쉬는시간(분)", "number") + f("lunch", "점심(분)", "number") + f("lunchAfter", "점심은 몇 교시 뒤", "number") +
+    '</div><div class="foot">교시별 시각과 하교 예상 시각은 예시 기본값으로 계산해요. 우리 학교 시간에 맞게 바꿔 주세요. 고등학교의 선택과목은 반별 시간표와 다를 수 있어요.</div></section>';
+  el.querySelectorAll("[data-cfg]").forEach(i => i.onchange = async () => {
+    cfg[i.dataset.cfg] = i.type === "number" ? +i.value : i.value; store.set("cfg", cfg);
+    if (i.dataset.cfg === "grade" || i.dataset.cfg === "cls") await loadTT();
+    renderTT(); renderToday();
+  });
+}
+
+function renderEv(){
+  const el = $("#ev"); if (!el) return;
+  const key = ymd(new Date());
+  const list = monthEvents.slice().sort((a, b) => a.AA_YMD.localeCompare(b.AA_YMD));
+  el.innerHTML = '<section class="card"><h2>학사 일정 (이번 달~다음 달)</h2>' + (list.length ? list.map(r => {
+    const d = fromYmd(r.AA_YMD), n = Math.round((d - fromYmd(key)) / 86400000);
+    return '<div class="row' + (n < 0 ? " past" : "") + '"><div class="d">' + (d.getMonth() + 1) + "/" + d.getDate() + "<small>" + dayName(d) + '요일</small></div><div><b>' + esc(r.EVENT_NM) + '</b><div class="msg">' + (n === 0 ? "오늘" : n > 0 ? "D-" + n : "지난 일정") + "</div></div></div>";
+  }).join("") : '<div class="msg">일정이 없거나 불러오지 못했어요.</div>') + "</section>" + (!NEIS_KEY ? '<div class="msg err">인증키가 없어서 5건만 보여요.</div>' : "");
+}
+
+/* 오늘 급식 */
+function renderToday(){
+  const d = new Date(), key = ymd(d);
+  const meal = meals.find(m => m.MLSV_YMD === key);
+  const menu = meal ? parseMenu(meal) : [];
+  const hits = hitList(menu), sc = meal ? score(menu) : 0, tips = [];
+  if (meal && hits.length) tips.push(["w", "오늘 급식에 내 알레르기 성분이 있어요: " + hits.map(h => ALG[h]).join(", ")]);
+  else if (meal && myAlg.length) tips.push(["", "오늘 급식에는 내가 체크한 알레르기 성분이 없어요."]);
+  else if (meal) tips.push(["", "아래 ‘내 알레르기 설정’에서 성분을 체크하면 위험한 메뉴를 알려 줘요."]);
+  if (!meal) tips.push(["", "오늘은 급식 정보가 없어요. 방학이나 휴업일일 수 있어요."]);
+  const nx = new Date(d); nx.setDate(d.getDate() + 1);
+  const tm = meals.find(m => m.MLSV_YMD === ymd(nx));
+  if (tm){ const tmn = parseMenu(tm), th = hitList(tmn).length; tips.push([th ? "w" : "", "내일 급식 예보 " + icon(score(tmn)) + " " + score(tmn) + "점" + (th ? " · 알레르기 주의" : "") + " — " + tmn.slice(0, 3).map(x => x.name).join(", ") + " 외"]); }
+  const rated = diary[key] ? diary[key].s : 0;
+  const hero = '<section class="hero"><div class="hl">오늘의 급식 예보</div>' + (meal
+    ? '<div class="big">' + icon(sc) + " " + sc + '<small>점</small></div><div class="hs">' + label(sc) + (hits.length ? " · 알레르기 주의" : "") + '</div><button class="btn gold" id="share" type="button">예보 복사하기</button>'
+    : '<div class="hs">오늘은 급식이 없어요</div>') + '<p class="hint">메뉴를 누르면 ♥ 좋아요 → ✕ 싫어요 → 해제 순서로 바뀌어요. 취향을 알려 줄수록 예보가 나에게 맞춰져요.</p></section>';
+  $("#today").innerHTML = hero + '<section class="card"><h2>' + (d.getMonth()+1) + "월 " + d.getDate() + "일 (" + dayName(d) + ') 점심</h2>' + (meal
+      ? '<div class="tray">' + menu.map(dishHtml).join("") + '</div><div class="msg">열량 ' + esc(meal.CAL_INFO) + "</div>"
+      : '<div class="msg">급식 정보 없음</div>') + '<ul class="advice">' + tips.map(t => '<li class="' + t[0] + '">' + esc(t[1]) + "</li>").join("") + "</ul></section>" +
+    (meal ? '<section class="card"><h2>오늘 급식 어땠어요?</h2><div class="stars">' + [1,2,3,4,5].map(n => '<button type="button" data-star="' + n + '" class="' + (rated >= n ? "on" : "") + '" aria-label="' + n + '점">★</button>').join("") + '</div><div class="msg">별점은 일기에 쌓이고, 높은 별점의 메뉴는 다음 예보에 자동으로 반영돼요.</div></section>' : "");
+  const sb = $("#share");
+  if (sb) sb.onclick = () => {
+    const t = "[급식 예보] " + school.name + " " + (d.getMonth()+1) + "/" + d.getDate() + " " + icon(sc) + " " + sc + "점 · " + label(sc) + "\n" + menu.map(x => x.name).join(", ");
+    try { navigator.clipboard.writeText(t).then(() => { sb.textContent = "복사됨!"; }); } catch(e){ sb.textContent = "복사 실패"; }
+  };
+}
+const clamp = n => Math.max(0, Math.min(100, n));
+function score(menu){
+  let v = 50;
+  menu.forEach(x => {
+    if (taste[x.name] === 1) v += 18;
+    else if (taste[x.name] === -1) v -= 22;
+    else if (auto[x.name]) v += Math.max(-12, Math.min(12, auto[x.name] * 4));
+  });
+  return clamp(v);
+}
+const icon = v => v >= 75 ? "☀️" : v >= 50 ? "⛅" : v >= 30 ? "☁️" : "🌧";
+const label = v => v >= 75 ? "맑음 · 기대되는 급식" : v >= 50 ? "구름 조금 · 무난한 급식" : v >= 30 ? "흐림 · 아쉬운 메뉴가 있어요" : "비 · 도시락을 고민해 보세요";
+const tcls = x => x.alg.some(a => myAlg.includes(a)) ? " bad" : taste[x.name] === 1 ? " like" : taste[x.name] === -1 ? " dislike" : "";
+const mark = x => taste[x.name] === 1 ? "♥ " : taste[x.name] === -1 ? "✕ " : "";
+function dishHtml(x){
+  return '<div class="dish' + tcls(x) + '" data-n="' + esc(x.name) + '">' + mark(x) + esc(x.name) + (x.alg.length ? "<small>" + x.alg.map(a => ALG[a] || a).join(", ") + "</small>" : "") + "</div>";
+}
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-n]");
+  if (!el) return;
+  const n = el.dataset.n;
+  taste[n] = taste[n] === 1 ? -1 : taste[n] === -1 ? 0 : 1;
+  if (!taste[n]) delete taste[n];
+  store.set("taste", taste); renderToday(); renderWeek(); renderMonth(); renderMe();
+});
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-star]");
+  if (!b) return;
+  const key = ymd(new Date()), meal = meals.find(m => m.MLSV_YMD === key);
+  const n = +b.dataset.star, prev = diary[key] ? diary[key].s - 3 : 0, delta = n - 3 - prev;
+  if (meal && delta) parseMenu(meal).forEach(x => { auto[x.name] = (auto[x.name] || 0) + delta; });
+  diary[key] = {s: n, m: meal ? parseMenu(meal).slice(0, 3).map(x => x.name).join(", ") : ""};
+  store.set("auto", auto); store.set("diary", diary); renderToday(); renderMe();
+});
+
+/* 이번 주 급식 */
+function renderWeek(){
+  if (!meals.length){ $("#week").innerHTML = '<div class="card msg">이번 주 급식 정보가 없어요.</div>'; return; }
+  const max = Math.max(...meals.map(kcal), 1);
+  const safe = meals.filter(m => !hitList(parseMenu(m)).length);
+  const top = safe.slice().sort((p, q) => score(parseMenu(q)) - score(parseMenu(p)))[0];
+  const td = top ? fromYmd(top.MLSV_YMD) : null;
+  $("#week").innerHTML = (top ? '<div class="best">이번 주 베스트 급식: ' + dayName(td) + "요일 " + icon(score(parseMenu(top))) + " " + score(parseMenu(top)) + "점</div>" : "") +
+    '<section class="card"><h2>이번 주 점심 예보</h2>' + meals.map(m => {
+    const d = fromYmd(m.MLSV_YMD), menu = parseMenu(m), hits = hitList(menu), ntr = parseNtr(m), sc = score(menu);
+    return '<div class="row"><div class="d">' + (d.getMonth()+1) + "/" + d.getDate() + "<small>" + dayName(d) + '요일</small><span class="sc">' + icon(sc) + " " + sc + '</span></div><div>' +
+      '<div class="chips">' + menu.map(x => '<span class="chip' + tcls(x) + '" data-n="' + esc(x.name) + '">' + mark(x) + esc(x.name) + "</span>").join("") + "</div>" +
+      (hits.length ? '<div class="msg err">주의: ' + hits.map(h => ALG[h]).join(", ") + "</div>" : "") +
+      '<div class="bar" aria-hidden="true"><i style="width:' + Math.round(kcal(m) / max * 100) + '%"></i></div><div class="msg">' + esc(m.CAL_INFO) + "</div>" +
+      (ntr.length ? '<details><summary>영양 정보</summary><div class="nt">' + ntr.map(n => "<span>" + esc(n[0]) + "</span><span>" + esc(n[1]) + "</span>").join("") + "</div></details>" : "") +
+      "</div></div>";
+  }).join("") + "</section>";
+}
+
+/* 한 달 예보 */
+function renderMonth(){
+  if (!monthMeals.length){ $("#month").innerHTML = '<div class="card msg">이번 달 급식 정보가 없어요.</div>'; return; }
+  const first = fromYmd(monthMeals[0].MLSV_YMD), by = {};
+  monthMeals.forEach(m => by[m.MLSV_YMD] = m);
+  const now = new Date(), y = now.getFullYear(), mo = now.getMonth(), last = new Date(y, mo + 1, 0).getDate();
+  let cells = "일월화수목금토".split("").map(c => "<b>" + c + "</b>").join("") + '<span></span>'.repeat(new Date(y, mo, 1).getDay());
+  for (let i = 1; i <= last; i++){
+    const k = y + String(mo+1).padStart(2,"0") + String(i).padStart(2,"0"), m = by[k];
+    if (!m){ cells += '<span class="cell" style="opacity:.3;display:grid;place-items:center">' + i + "</span>"; continue; }
+    const menu = parseMenu(m), sc = score(menu);
+    cells += '<button type="button" class="cell' + (sc >= 75 ? " hi" : sc < 50 ? " lo" : "") + (hitList(menu).length ? " al" : "") + (selDay === k ? " sel" : "") + '" data-day="' + k + '">' + i + "<br>" + icon(sc) + "</button>";
+  }
+  let det = '<div class="msg">날짜를 누르면 메뉴가 보여요. 파란 칸은 기대되는 날, 빨간 점은 알레르기 주의예요.</div>';
+  if (selDay && by[selDay]){
+    const m = by[selDay], menu = parseMenu(m), hits = hitList(menu);
+    det = '<div class="tray">' + menu.map(dishHtml).join("") + '</div>' + (hits.length ? '<div class="msg err">주의: ' + hits.map(h => ALG[h]).join(", ") + "</div>" : "") + '<div class="msg">' + esc(m.CAL_INFO) + "</div>";
+  }
+  const ks = monthMeals.map(kcal).filter(Boolean), avg = ks.length ? Math.round(ks.reduce((a, b) => a + b, 0) / ks.length) : 0;
+  const cnt = {}; monthMeals.forEach(m => parseMenu(m).forEach(x => cnt[x.name] = (cnt[x.name] || 0) + 1));
+  const topD = Object.entries(cnt).filter(e => e[1] > 1).sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0] + " " + e[1] + "회").join(", ") || "아직 반복 메뉴 없음";
+  const hot = monthMeals.slice().sort((a, b) => kcal(b) - kcal(a))[0];
+  const stats = '<section class="card"><h2>이번 달 급식 통계</h2><div class="stats"><div class="stat"><b>' + avg + '</b><span>평균 kcal</span></div><div class="stat"><b>' + (hot ? Number(hot.MLSV_YMD.slice(6)) + "일" : "-") + '</b><span>열량 최고일</span></div><div class="stat"><b style="font-size:14px">' + esc(topD) + "</b><span>자주 나온 메뉴</span></div></div></section>";
+  const note = !NEIS_KEY && monthMeals.length <= 5 ? '<div class="msg err">인증키가 없어서 5일치만 보여요. 코드에 NEIS_KEY를 넣어 주세요.</div>' : "";
+  $("#month").innerHTML = '<section class="card"><h2>' + (mo+1) + '월 급식 예보 달력</h2>' + note + '<div class="cal">' + cells + '</div></section><section class="card">' + det + "</section>" + stats;
+  document.querySelectorAll("[data-day]").forEach(b => b.onclick = () => { selDay = b.dataset.day; renderMonth(); });
+}
+
+/* 내 기록 */
+function renderMe(){
+  const el = $("#me"); if (!el) return;
+  const L = Object.keys(taste).filter(k => taste[k] === 1), D = Object.keys(taste).filter(k => taste[k] === -1);
+  const days = Object.keys(diary).sort().reverse();
+  const avg = days.length ? (days.reduce((a, k) => a + diary[k].s, 0) / days.length).toFixed(1) : "-";
+  const chips = L.map(n => '<span class="chip like" data-n="' + esc(n) + '">♥ ' + esc(n) + "</span>").concat(D.map(n => '<span class="chip dislike" data-n="' + esc(n) + '">✕ ' + esc(n) + "</span>")).join("");
+  el.innerHTML = '<section class="card"><h2>내 급식 일기</h2>' + (days.length
+      ? '<div class="msg">평균 ★' + avg + " · 기록 " + days.length + "일</div>" + days.slice(0, 10).map(k => '<div class="row"><div class="d">' + k.slice(4,6) + "/" + k.slice(6) + "<small>" + "★".repeat(diary[k].s) + '</small></div><div class="msg">' + esc(diary[k].m) + "</div></div>").join("")
+      : '<div class="msg">오늘 탭에서 별점을 남기면 여기에 쌓여요.</div>') + "</section>" +
+    '<section class="card"><h2>내 취향</h2><div class="chips">' + (chips || '<span class="msg">메뉴를 눌러 ♥ 좋아요나 ✕ 싫어요를 남겨 보세요.</span>') + "</div></section>";
+}
+
+/* 등교 · 하교 */
+const DEF = {go:["디벗 충전 확인", "물병", "교복·체육복"], back:["숙제 확인", "내일 준비물 챙기기", "디벗 충전"]};
+const hm = m => (m >= 60 ? Math.floor(m / 60) + "시간 " : "") + (m % 60) + "분";
+function checklist(id, title){
+  const items = store.get("list-" + id, DEF[id]), c = store.get("chk-" + id, {}), on = c.date === ymd(new Date()) ? c.on : [];
+  return '<section class="card"><h2>' + title + "</h2>" + items.map((t, i) => '<label class="chk"><input type="checkbox" data-ck="' + id + '" data-t="' + esc(t) + '"' + (on.includes(t) ? " checked" : "") + "><span>" + esc(t) + '</span><button class="x" type="button" data-del="' + id + '" data-i="' + i + '" aria-label="삭제">×</button></label>').join("") +
+    '<div class="search" style="margin-top:12px"><input data-add-in="' + id + '" type="text" placeholder="항목 추가" aria-label="항목 추가"><button class="btn" type="button" data-add="' + id + '">추가</button></div></section>';
+}
+function tick(){
+  const n = new Date(), wk = n.getDay() % 6 !== 0, nm = n.getHours() * 60 + n.getMinutes(), g = $("#cdGo"), b = $("#cdBack");
+  if (g){ const a = toMin(cfg.arr); g.innerHTML = !wk ? "오늘은 쉬는 날이에요 🎉" : nm < a ? hm(a - nm) + "<small>등교 시각 " + cfg.arr + "까지</small>" : "등교 시간이 지났어요"; }
+  if (b){
+    const ps = ttRows.filter(r => r.ALL_TI_YMD === ymd(n)), last = ps.length ? Math.max(...ps.map(r => +r.PERIO)) : 6, end = pStart(last) + +cfg.len;
+    b.innerHTML = !wk ? "오늘은 쉬는 날이에요 🎉" : nm < end ? hm(end - nm) + "<small>하교 예상 " + fmt(end) + (ps.length ? "" : " (시간표가 없어 6교시 기준)") + "</small>" : "오늘도 수고했어요 👏<small>하교 예상 시각 " + fmt(end) + "이 지났어요</small>";
+  }
+}
+setInterval(tick, 30000);
+const subjOf = d => [...new Set(ttRows.filter(r => r.ALL_TI_YMD === ymd(d)).sort((a, b) => a.PERIO - b.PERIO).map(r => r.ITRT_CNTNT))];
+const tipList = t => t.length ? '<ul class="advice">' + t.map(x => '<li class="' + x[0] + '">' + esc(x[1]) + "</li>").join("") + "</ul>" : "";
+function renderGo(){
+  const el = $("#go"); if (!el) return;
+  const n = new Date(), key = ymd(n), subj = subjOf(n), tips = [];
+  const meal = meals.find(m => m.MLSV_YMD === key), hits = meal ? hitList(parseMenu(meal)) : [];
+  if (subj.some(x => /체육/.test(x))) tips.push(["w", "오늘 체육 수업이 있어요. 체육복을 챙기세요."]);
+  const evs = monthEvents.filter(r => r.AA_YMD === key).map(r => r.EVENT_NM);
+  if (evs.length) tips.push(["", "오늘 학사 일정: " + evs.join(", ")]);
+  if (hits.length) tips.push(["w", "오늘 급식에 내 알레르기 성분이 있어요: " + hits.map(h => ALG[h]).join(", ")]);
+  el.innerHTML = '<section class="card"><h2>등교까지</h2><div class="cd" id="cdGo"></div></section>' +
+    '<section class="card"><h2>오늘 챙길 과목</h2>' + (subj.length ? '<div class="chips">' + subj.map(x => '<span class="chip">' + esc(x) + "</span>").join("") + "</div>" : '<div class="msg">' + (n.getDay() % 6 ? "‘학교’의 시간표에서 학년과 반을 설정하면 과목이 나와요." : "오늘은 수업이 없는 날이에요.") + "</div>") + tipList(tips) + "</section>" + checklist("go", "등교 준비물");
+  tick();
+}
+function renderBack(){
+  const el = $("#back"); if (!el) return;
+  const n = new Date(), nx = new Date(n); nx.setDate(n.getDate() + 1);
+  const subj = subjOf(nx), tm = meals.find(m => m.MLSV_YMD === ymd(nx)), tips = [];
+  const next = monthEvents.filter(r => r.AA_YMD > ymd(n)).sort((a, b) => a.AA_YMD.localeCompare(b.AA_YMD))[0];
+  if (tm){ const mn = parseMenu(tm), sc = score(mn), h = hitList(mn).length; tips.push([h ? "w" : "", "내일 급식 예보 " + icon(sc) + " " + sc + "점" + (h ? " · 알레르기 주의" : "")]); }
+  if (next) tips.push(["", "다음 일정 D-" + Math.round((fromYmd(next.AA_YMD) - fromYmd(ymd(n))) / 86400000) + " · " + next.EVENT_NM]);
+  el.innerHTML = '<section class="card"><h2>하교까지</h2><div class="cd" id="cdBack"></div></section>' +
+    '<section class="card"><h2>내일 미리보기</h2>' + (subj.length ? '<div class="chips">' + subj.map(x => '<span class="chip">' + esc(x) + "</span>").join("") + "</div>" : '<div class="msg">내일 시간표가 없어요. 금요일이거나 시간표를 아직 설정하지 않았을 수 있어요.</div>') + tipList(tips) + "</section>" + checklist("back", "하교 후 할 일");
+  tick();
+}
+document.addEventListener("change", e => {
+  const c = e.target.closest("[data-ck]"); if (!c) return;
+  const k = "chk-" + c.dataset.ck, cur = store.get(k, {}), t = c.dataset.t;
+  let on = cur.date === ymd(new Date()) ? cur.on : [];
+  on = c.checked ? [...on, t] : on.filter(x => x !== t);
+  store.set(k, {date: ymd(new Date()), on});
+});
+document.addEventListener("click", e => {
+  const d = e.target.closest("[data-del]"), a = e.target.closest("[data-add]");
+  if (d){ e.preventDefault(); const k = "list-" + d.dataset.del, l = store.get(k, DEF[d.dataset.del]).slice(); l.splice(+d.dataset.i, 1); store.set(k, l); renderGo(); renderBack(); }
+  if (a){
+    const v = document.querySelector('[data-add-in="' + a.dataset.add + '"]').value.trim(); if (!v) return;
+    const k = "list-" + a.dataset.add, l = store.get(k, DEF[a.dataset.add]).slice(); l.push(v); store.set(k, l); renderGo(); renderBack();
+  }
+});
+
+/* 용돈 기입장 */
+let bank = store.get("bank", []);
+const BC = ["식비", "간식", "문구", "취미", "교통", "저축", "기타"];
+const won = n => n.toLocaleString("ko-KR") + "원";
+function renderBank(){
+  const el = $("#bank"); if (!el) return;
+  const t = new Date(), ym = ymd(t).slice(0, 6), mo = bank.filter(b => b.d.slice(0, 6) === ym);
+  const sum = (l, ty) => l.filter(b => b.t === ty).reduce((a, b) => a + b.a, 0);
+  const by = BC.map(c => [c, mo.filter(b => b.t === "out" && b.c === c).reduce((a, b) => a + b.a, 0)]).filter(x => x[1]).sort((a, b) => b[1] - a[1]);
+  const iso = t.getFullYear() + "-" + String(t.getMonth() + 1).padStart(2, "0") + "-" + String(t.getDate()).padStart(2, "0");
+  el.innerHTML = '<section class="card"><h2>내 잔액</h2><div class="cd">' + won(sum(bank, "in") - sum(bank, "out")) + '</div><div class="stats" style="margin-top:12px;grid-template-columns:repeat(2,1fr)"><div class="stat"><b>' + won(sum(mo, "in")) + '</b><span>이번 달 수입</span></div><div class="stat"><b>' + won(sum(mo, "out")) + "</b><span>이번 달 지출</span></div></div></section>" +
+    '<section class="card"><h2>기록하기</h2><div class="cfg"><label>구분<select id="bt"><option value="out">지출</option><option value="in">수입(용돈)</option></select></label><label>분류<select id="bc">' + BC.map(c => "<option>" + c + "</option>").join("") + '</select></label><label>금액(원)<input id="ba" type="number" min="0" inputmode="numeric"></label><label>날짜<input id="bd" type="date" value="' + iso + '"></label></div><div class="search" style="margin-top:12px"><input id="bm" type="text" placeholder="메모 (예: 떡볶이)" aria-label="메모"><button class="btn" id="badd" type="button">추가</button></div></section>' +
+    (by.length ? '<section class="card"><h2>이번 달 지출 분류</h2>' + by.map(x => '<div class="msg" style="display:flex;justify-content:space-between"><span>' + x[0] + "</span><span>" + won(x[1]) + '</span></div><div class="bar"><i style="width:' + Math.round(x[1] / by[0][1] * 100) + '%"></i></div>').join("") + "</section>" : "") +
+    '<section class="card"><h2>최근 기록</h2>' + (bank.length ? bank.slice(-15).reverse().map(b => '<div class="row"><div class="d">' + b.d.slice(4, 6) + "/" + b.d.slice(6) + "<small>" + b.c + '</small></div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span>' + esc(b.m || "-") + '</span><span style="font-weight:700;color:' + (b.t === "in" ? "var(--main)" : "var(--ink)") + '">' + (b.t === "in" ? "+" : "-") + won(b.a) + '</span><button class="x" type="button" data-bdel="' + b.id + '" aria-label="삭제">×</button></div></div>').join("") : '<div class="msg">아직 기록이 없어요.</div>') + "</section>";
+  $("#badd").onclick = () => {
+    const a = Math.round(+$("#ba").value); if (!(a > 0)) return;
+    bank.push({id: Date.now(), t: $("#bt").value, c: $("#bc").value, a, d: $("#bd").value.replace(/-/g, ""), m: $("#bm").value.trim()});
+    store.set("bank", bank); renderBank();
+  };
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-bdel]"); if (!b) return;
+  bank = bank.filter(x => x.id !== +b.dataset.bdel); store.set("bank", bank); renderBank();
+});
+
+/* 미니게임 */
+let mg = null, qz = null, qTimer = null, gbest = store.get("gbest", {m: 0, q: 0});
+function renderGame(){
+  const el = $("#game"); if (!el) return;
+  const cards = mg ? '<div class="mem">' + mg.c.map((c, i) => { const up = mg.open.includes(i) || mg.done.includes(i); return '<button type="button" data-card="' + i + '" class="' + (mg.done.includes(i) ? "ok " : "") + (up ? "up" : "") + '" aria-label="카드">' + (up ? c : "?") + "</button>"; }).join("") + '</div><div class="msg">시도 ' + mg.moves + "번" + (mg.done.length === 16 ? " · 완성! 🎉" : "") + "</div>" : "";
+  const quiz = qz ? '<div class="cd" id="qq" style="margin-top:12px">' + (qz.t > 0 ? qz.a + " × " + qz.b + " = ?" : "끝! " + qz.s + "점") + '</div><div class="search" style="margin-top:12px"><input id="qin" type="number" inputmode="numeric" aria-label="정답"' + (qz.t > 0 ? "" : " disabled") + '><button class="btn" type="button" data-act="qans">확인</button></div><div class="msg"><span id="qt">' + qz.t + '</span>초 남음 · 점수 <span id="qs">' + qz.s + "</span></div>" : "";
+  el.innerHTML = '<section class="card"><h2>🃏 카드 짝 맞추기</h2><div class="msg">같은 그림 두 장을 찾아요. 최소 시도: ' + (gbest.m ? gbest.m + "번" : "-") + "</div>" + cards + '<button class="btn" type="button" data-act="mstart" style="margin-top:12px">' + (mg ? "다시 하기" : "시작하기") + "</button></section>" +
+    '<section class="card"><h2>⚡ 구구단 스피드 퀴즈</h2><div class="msg">30초 동안 최대한 많이 맞혀요. 최고 점수: ' + gbest.q + "점</div>" + quiz + '<button class="btn" type="button" data-act="qstart" style="margin-top:12px">' + (qz ? "다시 시작" : "시작하기") + "</button></section>";
+}
+function memStart(){
+  const e = ["🍙", "🍜", "🍕", "🍓", "🥕", "🍪", "🍩", "🥟"];
+  mg = {c: [...e, ...e].sort(() => Math.random() - .5), open: [], done: [], moves: 0, lock: false}; renderGame();
+}
+function memFlip(i){
+  if (!mg || mg.lock || mg.open.includes(i) || mg.done.includes(i)) return;
+  mg.open.push(i);
+  if (mg.open.length === 2){
+    mg.moves++;
+    const [a, b] = mg.open;
+    if (mg.c[a] === mg.c[b]){
+      mg.done.push(a, b); mg.open = [];
+      if (mg.done.length === 16 && (!gbest.m || mg.moves < gbest.m)){ gbest.m = mg.moves; store.set("gbest", gbest); }
+    } else { mg.lock = true; setTimeout(() => { mg.open = []; mg.lock = false; renderGame(); }, 700); }
+  }
+  renderGame();
+}
+function qNew(){ qz.a = 2 + Math.floor(Math.random() * 8); qz.b = 2 + Math.floor(Math.random() * 8); }
+function qStart(){
+  clearInterval(qTimer); qz = {t: 30, s: 0}; qNew(); renderGame(); $("#qin").focus();
+  qTimer = setInterval(() => {
+    qz.t--;
+    if ($("#qt")) $("#qt").textContent = qz.t;
+    if (qz.t <= 0){
+      clearInterval(qTimer);
+      if (qz.s > gbest.q){ gbest.q = qz.s; store.set("gbest", gbest); }
+      if ($("#qq")){ $("#qq").textContent = "끝! " + qz.s + "점"; $("#qin").disabled = true; }
+    }
+  }, 1000);
+}
+function qAns(){
+  if (!qz || qz.t <= 0) return;
+  const i = $("#qin"); if (+i.value === qz.a * qz.b) qz.s++;
+  qNew(); $("#qq").textContent = qz.a + " × " + qz.b + " = ?"; $("#qs").textContent = qz.s; i.value = ""; i.focus();
+}
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-act]");
+  if (a){ const k = a.dataset.act; if (k === "mstart") memStart(); if (k === "qstart") qStart(); if (k === "qans") qAns(); return; }
+  const c = e.target.closest("[data-card]"); if (c) memFlip(+c.dataset.card);
+});
+document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id === "qin") qAns(); });
+
+/* 알레르기 설정 */
+function buildAlgs(){
+  $("#algs").innerHTML = ALG.map((n, i) => i ? '<label><input type="checkbox" value="' + i + '"' + (myAlg.includes(i) ? " checked" : "") + "> " + i + ". " + n + "</label>" : "").join("");
+  $("#algs").onchange = () => {
+    myAlg = [...document.querySelectorAll("#algs input:checked")].map(c => +c.value);
+    store.set("alg", myAlg); renderToday(); renderWeek();
+  };
+}
+
+const CATS = {
+  go:{n:"등교", i:"🎒", d:"집에서 나서기 전에 확인해요", s:[["go","등교 준비"]]},
+  school:{n:"학교", i:"📚", d:"학교에서 수업을 들을 때 확인해요", s:[["tt","시간표"],["ev","학사 일정"]]},
+  meal:{n:"급식", i:"🍱", d:"점심시간에 먹는 급식 정보예요", s:[["today","오늘"],["week","주간"],["month","월간"],["me","내 기록"]]},
+  back:{n:"하교", i:"🏡", d:"학교를 마친 뒤에 확인해요", s:[["back","하교 준비"]]},
+  life:{n:"생활", i:"✨", d:"시간과 상관없이 언제든 써요", s:[["bank","용돈 기입장"],["game","미니게임"]]}
+};
+let cat = "go", sub = "go", opened = false;
+function show(c, sb){
+  cat = c; sub = sb || CATS[c].s[0][0];
+  const C = CATS[c];
+  $("#main").dataset.c = c;
+  $("#cathead").innerHTML = "<span>" + C.i + "</span><div><b>" + C.n + "</b><small>" + C.d + "</small></div>";
+  $("#nav").innerHTML = Object.keys(CATS).map(k => '<button type="button" data-cat="' + k + '"' + (k === c ? ' aria-current="true"' : "") + "><span>" + CATS[k].i + "</span>" + CATS[k].n + "</button>").join("");
+  $("#subtabs").hidden = C.s.length < 2;
+  $("#subtabs").innerHTML = C.s.map(x => '<button role="tab" type="button" data-sub="' + x[0] + '" aria-selected="' + (x[0] === sub) + '">' + x[1] + "</button>").join("");
+  ["go","tt","ev","today","week","month","me","back","bank","game"].forEach(id => { $("#" + id).hidden = id !== sub; });
+  $("#algcard").hidden = c !== "meal";
+}
+function autoOpen(){
+  const n = new Date(), nm = n.getHours() * 60 + n.getMinutes();
+  if (n.getDay() % 6 === 0) return show("life");
+  const ps = ttRows.filter(r => r.ALL_TI_YMD === ymd(n)), last = ps.length ? Math.max(...ps.map(r => +r.PERIO)) : 6;
+  const ls = pStart(+cfg.lunchAfter) + +cfg.len;
+  if (nm < toMin(cfg.first)) show("go");
+  else if (nm >= ls && nm < ls + +cfg.lunch) show("meal");
+  else if (nm < pStart(last) + +cfg.len) show("school");
+  else show("back");
+}
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-cat]"); if (a) return show(a.dataset.cat);
+  const b = e.target.closest("[data-sub]"); if (b) show(cat, b.dataset.sub);
+});
+
+function start(){
+  $("#picker").hidden = true; $("#main").hidden = false;
+  $("#school").textContent = school.name;
+  buildAlgs(); renderBank(); renderGame(); show("go"); load();
+}
+$("#find").onclick = search;
+$("#q").addEventListener("keydown", e => { if (e.key === "Enter") search(); });
+$("#change").onclick = () => { $("#picker").hidden = false; $("#main").hidden = true; };
+if (school) start();
+</script>
+</body>
+</html>
